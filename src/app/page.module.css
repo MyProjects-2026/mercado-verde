@@ -1,0 +1,882 @@
+.page {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  background: #f4f7f2;
+  color: #15251c;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.page *,
+.page *::before,
+.page *::after {
+  box-sizing: border-box;
+}
+
+.page a {
+  text-decoration: none;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 1px solid #dfe7e1;
+}
+
+.headerInner {
+  width: 100%;
+  max-width: 1280px;
+  min-height: 96px;
+  margin: 0 auto;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #16733e;
+  min-width: 0;
+}
+
+.logoIcon {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+  border-radius: 20px;
+  background: #16733e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+
+.logoWords {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.logoWords strong {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.logoWords small {
+  color: #68766e;
+  font-size: 13px;
+}
+
+.headerButton {
+  flex: 0 0 auto;
+  min-height: 56px;
+  padding: 0 27px;
+  border-radius: 17px;
+  background: #16733e;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+
+/* HERO */
+
+.hero {
+  width: 100%;
+  background: #f3f7ef;
+  border-bottom: 1px solid #e3e9e2;
+}
+
+.heroGrid {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 72px 22px 80px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+  gap: 56px;
+  align-items: center;
+}
+
+.heroContent {
+  min-width: 0;
+}
+
+.eyebrow,
+.sectionEyebrow {
+  color: #197441;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.welcome {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #e3f2e8;
+  color: #176f3d;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.hero h1 {
+  margin: 22px 0 0;
+  font-size: clamp(50px, 6vw, 76px);
+  line-height: 0.99;
+  letter-spacing: -4px;
+  font-weight: 500;
+}
+
+.hero h1 span {
+  color: #16733e;
+}
+
+.heroText {
+  max-width: 680px;
+  margin: 30px 0 0;
+  color: #68766e;
+  font-size: 22px;
+  line-height: 1.65;
+}
+
+.searchBox {
+  width: 100%;
+  margin-top: 34px;
+  padding: 12px;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 15px 45px rgba(26, 55, 36, 0.10);
+}
+
+.searchBox input {
+  display: block;
+  width: 100%;
+  height: 58px;
+  border: 0;
+  outline: none;
+  padding: 0 16px;
+  color: #15251c;
+  background: #ffffff;
+  font-size: 17px;
+}
+
+.searchBox input::placeholder {
+  color: #929b96;
+}
+
+.searchButton {
+  display: flex;
+  width: 100%;
+  min-height: 58px;
+  margin-top: 12px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: #16733e;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.heroActions {
+  width: 100%;
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.actionButton {
+  width: 100%;
+  min-height: 56px;
+  padding: 14px 20px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 700;
+}
+
+.greenButton {
+  background: #16733e;
+  color: #ffffff;
+}
+
+.outlineButton {
+  background: #ffffff;
+  border: 2px solid #16733e;
+  color: #16733e;
+}
+
+
+/* HERO CARD */
+
+.heroCard {
+  width: 100%;
+  min-height: 470px;
+  border-radius: 36px;
+  padding: 48px;
+  background: #116638;
+  color: #ffffff;
+  box-shadow: 0 25px 60px rgba(16, 91, 48, 0.20);
+}
+
+.heroCardContent {
+  height: 100%;
+  min-height: 374px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cardEyebrow {
+  color: #f6cf68;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.heroCard h2 {
+  margin: 25px 0 0;
+  font-size: clamp(43px, 5vw, 60px);
+  line-height: 1.04;
+  letter-spacing: -3px;
+  font-weight: 500;
+}
+
+.heroCard p {
+  max-width: 500px;
+  margin: 25px 0 0;
+  color: rgba(255,255,255,0.75);
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.heroStats {
+  width: 100%;
+  margin-top: 45px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255,255,255,0.20);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.heroStats div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.heroStats strong {
+  font-size: 30px;
+}
+
+.heroStats span {
+  color: rgba(255,255,255,0.65);
+  font-size: 14px;
+}
+
+
+/* CATEGORIES */
+
+.categories {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 96px 22px;
+}
+
+.sectionHeader {
+  width: 100%;
+  display: block;
+}
+
+.sectionHeader h2,
+.sectionInner h2 {
+  margin: 12px 0 0;
+  font-size: clamp(42px, 5vw, 58px);
+  line-height: 1.08;
+  letter-spacing: -3px;
+  font-weight: 500;
+}
+
+.sectionHeader p {
+  margin: 20px 0 0;
+  color: #68766e;
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+/*
+  CRITICAL FIX:
+  The button has its own block and its own margin.
+  It is NOT positioned over the paragraph.
+*/
+.viewAllWrapper {
+  width: 100%;
+  display: block;
+  margin-top: 30px;
+}
+
+.viewAllButton {
+  display: inline-flex;
+  min-height: 56px;
+  padding: 0 28px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #16733e;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #16733e;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.categoryGrid {
+  width: 100%;
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.categoryCard {
+  min-height: 330px;
+  padding: 28px;
+  border: 1px solid #dfe7e1;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(30, 55, 38, 0.05);
+}
+
+.categoryIcon {
+  width: 96px;
+  height: 96px;
+  border-radius: 25px;
+  background: #eaf5ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+
+.categoryCard h3 {
+  margin: 28px 0 0;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.categoryCard p {
+  margin: 14px 0 0;
+  color: #68766e;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+
+/* HOW */
+
+.howSection {
+  width: 100%;
+  background: #ffffff;
+}
+
+.sectionInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 96px 22px;
+}
+
+.steps {
+  width: 100%;
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.step {
+  min-height: 260px;
+  padding: 36px;
+  border-radius: 28px;
+  background: #f4f7f2;
+}
+
+.step span {
+  color: #16733e;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.step h3 {
+  margin: 28px 0 0;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.step p {
+  margin: 16px 0 0;
+  color: #68766e;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+
+/* PRODUCER / BUYER */
+
+.businessSection {
+  width: 100%;
+  background: #f4f7f2;
+}
+
+.businessGrid {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 96px 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.businessCard {
+  min-height: 440px;
+  padding: 48px;
+  border-radius: 32px;
+}
+
+.producerCard {
+  background: #16733e;
+  color: #ffffff;
+}
+
+.buyerCard {
+  background: #ffffff;
+  border: 1px solid #dfe7e1;
+}
+
+.businessIcon {
+  font-size: 42px;
+}
+
+.businessCard h2 {
+  margin: 28px 0 0;
+  font-size: 42px;
+  font-weight: 500;
+}
+
+.businessCard p {
+  max-width: 600px;
+  margin: 20px 0 0;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.producerCard p {
+  color: rgba(255,255,255,0.75);
+}
+
+.buyerCard p {
+  color: #68766e;
+}
+
+/*
+  CRITICAL FIX:
+  Button gets its own block AFTER paragraph.
+*/
+.cardButtonArea {
+  display: block;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.whiteButton,
+.greenAction {
+  display: inline-flex;
+  min-height: 56px;
+  padding: 0 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  font-weight: 700;
+}
+
+.whiteButton {
+  background: #ffffff;
+  color: #16733e;
+}
+
+.greenAction {
+  background: #16733e;
+  color: #ffffff;
+}
+
+
+/* FOUNDER */
+
+.founderSection {
+  width: 100%;
+  background: #ffffff;
+}
+
+.founderInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 96px 22px;
+}
+
+.founderBadge {
+  color: #16733e;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.founderGrid {
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.founderGrid h2 {
+  margin: 0;
+  font-size: clamp(42px, 5vw, 58px);
+  line-height: 1.08;
+  letter-spacing: -3px;
+  font-weight: 500;
+}
+
+.founderGrid > div:first-child p {
+  max-width: 650px;
+  margin: 24px 0 0;
+  color: #68766e;
+  font-size: 20px;
+  line-height: 1.7;
+}
+
+.founderInfo {
+  padding: 34px;
+  border-radius: 28px;
+  background: #f4f7f2;
+}
+
+.founderName {
+  color: #16733e;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.founderRole {
+  margin-top: 7px;
+  font-size: 18px;
+  color: #68766e;
+}
+
+.founderExperience {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.founderExperience strong {
+  margin-bottom: 5px;
+}
+
+.founderExperience span {
+  color: #68766e;
+}
+
+.contactButton {
+  display: flex;
+  min-height: 56px;
+  margin-top: 28px;
+  padding: 0 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: #16733e;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+
+/* FINAL */
+
+.finalSection {
+  width: 100%;
+  padding: 0 22px 96px;
+  background: #ffffff;
+}
+
+.finalCard {
+  max-width: 1236px;
+  margin: 0 auto;
+  padding: 80px 30px;
+  border-radius: 36px;
+  background: #123f29;
+  color: #ffffff;
+  text-align: center;
+}
+
+.sectionEyebrowLight {
+  color: #f6cf68;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.finalCard h2 {
+  max-width: 800px;
+  margin: 22px auto 0;
+  font-size: clamp(42px, 5vw, 60px);
+  line-height: 1.05;
+  letter-spacing: -3px;
+  font-weight: 500;
+}
+
+.finalCard p {
+  max-width: 650px;
+  margin: 22px auto 0;
+  color: rgba(255,255,255,0.70);
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.finalButtonArea {
+  display: block;
+  margin-top: 30px;
+}
+
+.finalButton {
+  display: inline-flex;
+  min-height: 58px;
+  padding: 0 30px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 17px;
+  background: #ffffff;
+  color: #16733e;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+
+/* FOOTER */
+
+.footer {
+  width: 100%;
+  border-top: 1px solid #dfe7e1;
+  background: #ffffff;
+}
+
+.footerInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 22px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
+  gap: 30px;
+}
+
+.footerInner > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.footerInner strong {
+  color: #16733e;
+  font-size: 17px;
+}
+
+.footerInner span,
+.footerInner a {
+  color: #68766e;
+  font-size: 14px;
+}
+
+.footerInner a:hover {
+  color: #16733e;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+  .heroGrid {
+    grid-template-columns: 1fr;
+    padding-top: 55px;
+  }
+
+  .heroCard {
+    min-height: 400px;
+  }
+
+  .categoryGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .businessGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .founderGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .footerInner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .headerInner {
+    min-height: 96px;
+    padding: 12px 22px;
+  }
+
+  .logo {
+    gap: 12px;
+  }
+
+  .logoIcon {
+    width: 64px;
+    height: 64px;
+    flex-basis: 64px;
+  }
+
+  .logoWords strong {
+    font-size: 26px;
+  }
+
+  .logoWords small {
+    display: none;
+  }
+
+  .headerButton {
+    min-height: 56px;
+    padding: 0 20px;
+    font-size: 17px;
+  }
+
+  .heroGrid {
+    padding: 48px 22px 60px;
+    gap: 40px;
+  }
+
+  .hero h1 {
+    font-size: 52px;
+    letter-spacing: -3px;
+  }
+
+  .heroText {
+    font-size: 19px;
+    line-height: 1.7;
+  }
+
+  .heroActions {
+    grid-template-columns: 1fr;
+  }
+
+  .heroCard {
+    min-height: 390px;
+    padding: 32px;
+    border-radius: 30px;
+  }
+
+  .heroCard h2 {
+    font-size: 44px;
+  }
+
+  .categories,
+  .sectionInner,
+  .businessGrid,
+  .founderInner {
+    padding-top: 68px;
+    padding-bottom: 68px;
+  }
+
+  .sectionHeader h2,
+  .sectionInner h2,
+  .founderGrid h2 {
+    font-size: 43px;
+  }
+
+  .sectionHeader p {
+    font-size: 18px;
+  }
+
+  /*
+    Mobile button separation:
+    Description ends first.
+    Button starts AFTER a real margin.
+    Cards start AFTER the button.
+  */
+  .viewAllWrapper {
+    margin-top: 28px;
+  }
+
+  .viewAllButton {
+    width: auto;
+    min-width: 150px;
+  }
+
+  .categoryGrid {
+    grid-template-columns: 1fr;
+    margin-top: 38px;
+  }
+
+  .categoryCard {
+    min-height: 290px;
+  }
+
+  .businessCard {
+    min-height: 430px;
+    padding: 34px;
+  }
+
+  .businessCard h2 {
+    font-size: 38px;
+  }
+
+  .founderInfo {
+    padding: 28px;
+  }
+
+  .finalSection {
+    padding: 0 22px 68px;
+  }
+
+  .finalCard {
+    padding: 60px 24px;
+    border-radius: 30px;
+  }
+
+  .footerInner {
+    grid-template-columns: 1fr;
+  }
+
+}

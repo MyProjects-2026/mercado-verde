@@ -1,35 +1,75 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 export default function EntrarPage() {
-  const [show, setShow] = useState(false);
+  const router = useRouter();
+  const supabase = createClient();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setLoading(true);
+    setErrorMessage("");
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setErrorMessage(
+        "Email ou palavra-passe incorretos. Verifique os dados e tente novamente."
+      );
+      setLoading(false);
+      return;
+    }
+
+    router.push("/");
+    router.refresh();
+  }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-green-50 px-6">
-      <div className="w-full max-w-md">
+    <main className="min-h-screen bg-green-50 px-6 py-12">
+      <div className="mx-auto max-w-md">
         <Link
           href="/"
-          className="mb-8 block text-center text-2xl font-bold text-green-700"
+          className="block text-center text-2xl font-bold text-green-700"
         >
           🌱 Mercado Verde
         </Link>
 
-        <div className="rounded-3xl border bg-white p-8 shadow">
+        <div className="mt-8 rounded-3xl bg-white p-8 shadow-sm">
           <h1 className="text-3xl font-bold">Entrar</h1>
+
           <p className="mt-2 text-gray-500">
             Aceda à sua conta Mercado Verde.
           </p>
 
-          <form className="mt-8 space-y-5">
+          {errorMessage && (
+            <div className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {errorMessage}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="mt-6 space-y-5">
             <div>
               <label className="text-sm font-semibold">Email</label>
               <input
                 required
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="seu@email.com"
                 className="mt-2 w-full rounded-xl border px-4 py-3"
-                placeholder="seuemail@example.com"
               />
             </div>
 
@@ -37,51 +77,34 @@ export default function EntrarPage() {
               <label className="text-sm font-semibold">
                 Palavra-passe
               </label>
-
-              <div className="relative mt-2">
-                <input
-                  required
-                  type={show ? "text" : "password"}
-                  className="w-full rounded-xl border px-4 py-3 pr-20"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShow(!show)}
-                  className="absolute right-3 top-3 text-sm text-green-600"
-                >
-                  {show ? "Ocultar" : "Mostrar"}
-                </button>
-              </div>
+              <input
+                required
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="A sua palavra-passe"
+                className="mt-2 w-full rounded-xl border px-4 py-3"
+              />
             </div>
 
             <button
-              type="button"
-              className="text-sm font-semibold text-green-600"
-            >
-              Esqueceu a palavra-passe?
-            </button>
-
-            <button
               type="submit"
-              className="w-full rounded-xl bg-green-600 py-3 font-bold text-white"
+              disabled={loading}
+              className="w-full rounded-xl bg-green-600 py-4 font-bold text-white disabled:opacity-60"
             >
-              Entrar
+              {loading ? "A entrar..." : "Entrar no Mercado Verde"}
             </button>
           </form>
 
-          <div className="my-7 border-t" />
-
-          <p className="text-center text-sm text-gray-500">
-            Ainda não tem conta?
-          </p>
-
-          <Link
-            href="/registar"
-            className="mt-3 block rounded-xl border py-3 text-center font-semibold text-green-700"
-          >
-            Criar conta
-          </Link>
+          <div className="mt-6 text-center text-sm text-gray-500">
+            Ainda não tem conta?{" "}
+            <Link
+              href="/registar"
+              className="font-semibold text-green-700 hover:underline"
+            >
+              Criar conta
+            </Link>
+          </div>
         </div>
       </div>
     </main>

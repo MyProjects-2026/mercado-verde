@@ -1,153 +1,364 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+
+type Category = {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string | null;
+};
 
 export default function VenderPage() {
-  const [sent, setSent] = useState(false);
+  const router = useRouter();
+  const supabase = createClient();
 
-  if (sent) {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [name, setName] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [price, setPrice] = useState("");
+  const [unit, setUnit] = useState("kg");
+  const [quantity, setQuantity] = useState("");
+  const [province, setProvince] = useState("Nampula");
+  const [district, setDistrict] = useState("");
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    async function loadCategories() {
+      const { data, error } = await supabase
+        .from("categories")
+        .select("id, name, slug, icon")
+        .order("name");
+
+      if (error) {
+        setErrorMessage("Não foi possível carregar as categorias.");
+      } else {
+        setCategories(data ?? []);
+        if (data?.length) {
+          setCategoryId(data[0].id);
+        }
+      }
+
+      setLoadingCategories(false);
+    }
+
+    loadCategories();
+  }, [supabase]);
+
+  function createSlug(value: string) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-green-50 px-6">
-        <div className="max-w-md rounded-3xl bg-white p-10 text-center shadow">
-          <div className="text-6xl">✅</div>
-          <h1 className="mt-5 text-2xl font-bold">Produto enviado!</h1>
-          <p className="mt-3 text-gray-500">
-            O anúncio foi recebido para verificação.
-          </p>
-          <Link
-            href="/produtos"
-            className="mt-6 inline-block rounded-xl bg-green-600 px-6 py-3 font-bold text-white"
-          >
-            Ver produtos
-          </Link>
-        </div>
-      </main>
+      value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "") +
+      "-" +
+      Date.now()
     );
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setLoading(true);
+    setErrorMessage("");
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      setLoading(false);
+      setErrorMessage(
+        "Precisa de iniciar sessão antes de publicar um produto."
+      );
+      return;
+    }
+
+    if (!categoryId) {
+      setLoading(false);
+      setErrorMessage("Selecione uma categoria.");
+      return;
+    }
+
+    const numericPrice = Number(price);
+    const numericQuantity = Number(quantity);
+
+    if (!Number.isFinite(numericPrice) || numericPrice < 0) {
+      setLoading(false);
+      setErrorMessage("Introduza um preço válido.");
+      return;
+    }
+
+    if (!Number.isFinite(numericQuantity) || numericQuantity <= 0) {
+      setLoading(false);
+      setErrorMessage("Introduza uma quantidade válida.");
+      return;
+    }
+
+    const { error } = await supabase.from("products").insert({
+      seller_id: user.id,
+      category_id: categoryId,
+      name: name.trim(),
+      slug: createSlug(name),
+      description: description.trim() || null,
+      price: numericPrice,
+      unit,
+      quantity: numericQuantity,
+      province: province.trim(),
+      district: district.trim() || null,
+      status: "available",
+    });
+
+    if (error) {
+      console.error(error);
+      setErrorMessage(
+        "Não foi possível publicar o produto. Verifique a sua conta e tente novamente."
+      );
+      setLoading(false);
+      return;
+    }
+
+    router.push("/produtos?published=1");
   }
 
   return (
     <main className="min-h-screen bg-gray-50">
       <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-7xl justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="text-xl font-bold text-green-700">
             🌱 Mercado Verde
           </Link>
-          <Link href="/produtos">Produtos</Link>
+
+          <Link
+            href="/produtos"
+            className="rounded-xl px-4 py-2 font-medium text-gray-700 hover:bg-gray-100"
+          >
+            Ver produtos
+          </Link>
         </div>
       </header>
 
       <section className="mx-auto max-w-3xl px-6 py-12">
         <div className="text-center">
-          <p className="font-semibold text-green-600">VENDEDOR</p>
-          <h1 className="mt-2 text-4xl font-bold">
+          <p className="font-semibold uppercase tracking-wide text-green-600">
+            Vendedor
+          </p>
+
+          <h1 className="mt-2 text-4xl font-bold text-gray-900">
             Publique o seu produto
           </h1>
+
+          <p className="mx-auto mt-4 max-w-xl text-gray-600">
+            Apresente os seus produtos agrícolas a compradores em Moçambique.
+          </p>
         </div>
 
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSent(true);
-          }}
-          className="mt-10 rounded-3xl border bg-white p-8"
+          onSubmit={handleSubmit}
+          className="mt-10 rounded-3xl border bg-white p-6 shadow-sm md:p-8"
         >
-          <div className="grid gap-5 md:grid-cols-2">
+          {errorMessage && (
+            <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {errorMessage}
+            </div>
+          )}
 
+          <div className="grid gap-5 md:grid-cols-2">
             <div className="md:col-span-2">
-              <label className="text-sm font-semibold">
+              <label
+                htmlFor="name"
+                className="text-sm font-semibold text-gray-800"
+              >
                 Nome do produto
               </label>
+
               <input
+                id="name"
                 required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Ex: Milho Amarelo"
-                className="mt-2 w-full rounded-xl border px-4 py-3"
+                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-green-500"
               />
             </div>
 
             <div>
-              <label className="text-sm font-semibold">Categoria</label>
-              <select className="mt-2 w-full rounded-xl border px-4 py-3">
-                <option>Milho</option>
-                <option>Feijão</option>
-                <option>Arroz</option>
-                <option>Hortícolas</option>
-                <option>Frutas</option>
-                <option>Mandioca</option>
-                <option>Amendoim</option>
-                <option>Outros</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="text-sm font-semibold">Preço</label>
-              <input
-                required
-                type="number"
-                placeholder="MZN"
-                className="mt-2 w-full rounded-xl border px-4 py-3"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-semibold">Unidade</label>
-              <select className="mt-2 w-full rounded-xl border px-4 py-3">
-                <option>kg</option>
-                <option>unidade</option>
-                <option>saco</option>
-                <option>caixa</option>
-                <option>tonelada</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="text-sm font-semibold">Quantidade</label>
-              <input
-                required
-                placeholder="Ex: 500 kg"
-                className="mt-2 w-full rounded-xl border px-4 py-3"
-              />
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="text-sm font-semibold">
-                Localização
+              <label
+                htmlFor="category"
+                className="text-sm font-semibold text-gray-800"
+              >
+                Categoria
               </label>
-              <input
+
+              <select
+                id="category"
                 required
-                placeholder="Distrito / Província"
-                className="mt-2 w-full rounded-xl border px-4 py-3"
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                disabled={loadingCategories}
+                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-green-500"
+              >
+                {loadingCategories ? (
+                  <option>Carregando...</option>
+                ) : (
+                  <>
+                    <option value="">Selecione uma categoria</option>
+
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.icon ? `${category.icon} ` : ""}
+                        {category.name}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </select>
+            </div>
+
+            <div>
+              <label
+                htmlFor="price"
+                className="text-sm font-semibold text-gray-800"
+              >
+                Preço por unidade
+              </label>
+
+              <div className="mt-2 flex">
+                <input
+                  id="price"
+                  required
+                  min="0"
+                  step="0.01"
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  placeholder="Ex: 35"
+                  className="w-full rounded-l-xl border px-4 py-3 outline-none focus:border-green-500"
+                />
+
+                <span className="flex items-center rounded-r-xl border border-l-0 bg-gray-50 px-4 text-sm font-medium text-gray-600">
+                  MZN
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="unit"
+                className="text-sm font-semibold text-gray-800"
+              >
+                Unidade
+              </label>
+
+              <select
+                id="unit"
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-green-500"
+              >
+                <option value="kg">kg</option>
+                <option value="unidade">Unidade</option>
+                <option value="saco">Saco</option>
+                <option value="caixa">Caixa</option>
+                <option value="tonelada">Tonelada</option>
+              </select>
+            </div>
+
+            <div>
+              <label
+                htmlFor="quantity"
+                className="text-sm font-semibold text-gray-800"
+              >
+                Quantidade disponível
+              </label>
+
+              <input
+                id="quantity"
+                required
+                min="0.01"
+                step="0.01"
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                placeholder="Ex: 500"
+                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-green-500"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="province"
+                className="text-sm font-semibold text-gray-800"
+              >
+                Província
+              </label>
+
+              <input
+                id="province"
+                required
+                value={province}
+                onChange={(e) => setProvince(e.target.value)}
+                placeholder="Ex: Nampula"
+                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-green-500"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="district"
+                className="text-sm font-semibold text-gray-800"
+              >
+                Distrito
+              </label>
+
+              <input
+                id="district"
+                value={district}
+                onChange={(e) => setDistrict(e.target.value)}
+                placeholder="Ex: Nampula"
+                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-green-500"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="text-sm font-semibold">
+              <label
+                htmlFor="description"
+                className="text-sm font-semibold text-gray-800"
+              >
                 Descrição
               </label>
-              <textarea
-                rows={5}
-                placeholder="Descreva o produto..."
-                className="mt-2 w-full rounded-xl border px-4 py-3"
-              />
-            </div>
 
-            <div className="md:col-span-2">
-              <label className="text-sm font-semibold">
-                Fotografia
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                className="mt-2 w-full rounded-xl border p-3"
+              <textarea
+                id="description"
+                rows={5}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Descreva o produto, qualidade, condições de venda, etc."
+                className="mt-2 w-full rounded-xl border px-4 py-3 outline-none focus:border-green-500"
               />
             </div>
           </div>
 
+          <div className="mt-6 rounded-xl bg-green-50 p-4 text-sm text-green-800">
+            💡 <strong>Fotografias</strong> serão adicionadas na próxima etapa
+            através do armazenamento do Mercado Verde.
+          </div>
+
           <button
             type="submit"
-            className="mt-8 w-full rounded-xl bg-green-600 py-4 font-bold text-white"
+            disabled={loading || loadingCategories}
+            className="mt-8 w-full rounded-xl bg-green-600 py-4 font-bold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Publicar produto
+            {loading ? "A publicar..." : "Publicar produto"}
           </button>
         </form>
       </section>

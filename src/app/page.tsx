@@ -1,409 +1,274 @@
+"use client";
+
 import Link from "next/link";
-
-const categories = [
-  { name: "Milho", icon: "🌽" },
-  { name: "Feijão", icon: "🫘" },
-  { name: "Arroz", icon: "🍚" },
-  { name: "Hortícolas", icon: "🥬" },
-  { name: "Frutas", icon: "🍊" },
-  { name: "Mandioca", icon: "🥔" },
-  { name: "Amendoim", icon: "🥜" },
-  { name: "Outros", icon: "🌱" },
-];
-
-const products = [
-  {
-    name: "Milho Amarelo",
-    location: "Nampula",
-    price: "35 MZN/kg",
-    seller: "Produtor Local",
-    icon: "🌽",
-  },
-  {
-    name: "Feijão Nhemba",
-    location: "Nampula",
-    price: "120 MZN/kg",
-    seller: "Agro Nampula",
-    icon: "🫘",
-  },
-  {
-    name: "Tomate Fresco",
-    location: "Nampula",
-    price: "80 MZN/kg",
-    seller: "Horta Verde",
-    icon: "🍅",
-  },
-  {
-    name: "Amendoim",
-    location: "Nampula",
-    price: "100 MZN/kg",
-    seller: "Cooperativa Agrícola",
-    icon: "🥜",
-  },
-];
+import { useEffect, useState } from "react";
+import styles from "./page.module.css";
 
 export default function Home() {
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const savedName = localStorage.getItem("mv_user_name");
+    if (savedName) setName(savedName);
+  }, []);
+
+  const categories = [
+    {
+      icon: "🌽",
+      title: "Cereais",
+      text: "Milho, arroz, trigo e outros",
+    },
+    {
+      icon: "🥬",
+      title: "Hortícolas",
+      text: "Produtos frescos de produtores",
+    },
+    {
+      icon: "🍌",
+      title: "Frutas",
+      text: "Frutas frescas e da época",
+    },
+    {
+      icon: "🥔",
+      title: "Tubérculos",
+      text: "Batata, mandioca e outros",
+    },
+  ];
+
   return (
-    <main className="min-h-screen bg-white text-gray-900">
+    <main className={styles.page}>
 
       {/* HEADER */}
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
 
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-xl">
-              🌱
-            </div>
+          <Link href="/" className={styles.logo}>
+            <span className={styles.logoIcon}>🌿</span>
 
-            <div>
-              <h1 className="text-xl font-bold text-green-700">
-                Mercado Verde
-              </h1>
-              <p className="text-xs text-gray-500">
-                Conectando produtores e compradores
-              </p>
-            </div>
+            <span className={styles.logoWords}>
+              <strong>Mercado Verde</strong>
+              <small>Do produtor ao comprador.</small>
+            </span>
           </Link>
 
-          <nav className="hidden items-center gap-8 md:flex">
-            <Link
-              href="/"
-              className="font-medium text-green-700"
-            >
-              Início
-            </Link>
-
-            <Link
-              href="/produtos"
-              className="text-gray-600 hover:text-green-700"
-            >
-              Produtos
-            </Link>
-
-            <Link
-              href="/vender"
-              className="text-gray-600 hover:text-green-700"
-            >
-              Vender
-            </Link>
-
-            <Link
-              href="/sobre"
-              className="text-gray-600 hover:text-green-700"
-            >
-              Sobre nós
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <button className="rounded-lg border px-4 py-2 text-sm font-medium hover:bg-gray-50">
-              Entrar
-            </button>
-
-            <button className="hidden rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 sm:block">
-              Criar conta
-            </button>
-          </div>
+          <Link
+            href="/auth?mode=signup"
+            className={styles.headerButton}
+          >
+            Criar conta
+          </Link>
 
         </div>
       </header>
 
+
       {/* HERO */}
-      <section className="bg-gradient-to-br from-green-700 via-green-600 to-emerald-500">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 py-20 md:grid-cols-2">
+      <section className={styles.hero}>
+        <div className={styles.heroGrid}>
 
-          <div className="text-white">
-            <span className="mb-5 inline-block rounded-full bg-white/15 px-4 py-2 text-sm">
-              🇲🇿 Feito para Moçambique
-            </span>
+          <div className={styles.heroContent}>
 
-            <h2 className="text-4xl font-extrabold leading-tight md:text-6xl">
-              O mercado agrícola
+            <div className={styles.eyebrow}>
+              🌱 AGRICULTURA MOÇAMBICANA
+            </div>
+
+            {name && (
+              <div className={styles.welcome}>
+                Bem-vindo, {name.split(" ")[0]} 👋
+              </div>
+            )}
+
+            <h1>
+              Do produtor
               <br />
-              <span className="text-green-100">
-                de Moçambique
-              </span>
-            </h2>
+              <span>para o mercado.</span>
+            </h1>
 
-            <p className="mt-6 max-w-xl text-lg leading-8 text-green-50">
-              Encontre produtos agrícolas, conecte-se diretamente
-              com produtores e faça negócios de forma simples,
-              segura e transparente.
+            <p className={styles.heroText}>
+              Encontre produtos agrícolas, ligue-se diretamente
+              aos produtores e faça negócios no Mercado Verde.
             </p>
 
+
             {/* SEARCH */}
-            <div className="mt-8 flex max-w-2xl flex-col gap-3 rounded-2xl bg-white p-3 shadow-xl sm:flex-row">
+            <div className={styles.searchBox}>
+
               <input
                 type="text"
-                placeholder="O que procura? Ex: milho, feijão, tomate..."
-                className="flex-1 rounded-xl px-4 py-3 text-gray-800 outline-none"
+                placeholder="O que procura? Ex.: milho, tomate, batata..."
               />
 
-              <button className="rounded-xl bg-green-600 px-7 py-3 font-semibold text-white hover:bg-green-700">
-                🔍 Pesquisar
-              </button>
+              <Link
+                href="/auth?role=buyer"
+                className={styles.searchButton}
+              >
+                Procurar
+              </Link>
+
             </div>
 
-            <div className="mt-5 flex flex-wrap gap-4 text-sm text-green-50">
-              <span>✓ Produtos locais</span>
-              <span>✓ Contacto direto</span>
-              <span>✓ Sem complicações</span>
+
+            {/* ACTION BUTTONS — NORMAL FLOW */}
+            <div className={styles.heroActions}>
+
+              <Link
+                href="/auth?role=producer"
+                className={`${styles.actionButton} ${styles.greenButton}`}
+              >
+                👩🏾‍🌾 Quero vender
+              </Link>
+
+              <Link
+                href="/auth?role=buyer"
+                className={`${styles.actionButton} ${styles.outlineButton}`}
+              >
+                🏪 Quero comprar
+              </Link>
+
             </div>
+
           </div>
 
-          {/* HERO VISUAL */}
-          <div className="hidden md:block">
-            <div className="relative mx-auto flex h-[420px] max-w-md items-center justify-center rounded-3xl bg-white/10 backdrop-blur">
 
-              <div className="text-center">
-                <div className="text-[130px]">🌾</div>
+          {/* HERO CARD */}
+          <div className={styles.heroCard}>
 
-                <div className="mt-4 rounded-2xl bg-white p-5 text-left shadow-xl">
-                  <p className="text-sm text-gray-500">
-                    Produto em destaque
-                  </p>
+            <div className={styles.heroCardContent}>
 
-                  <h3 className="mt-1 text-xl font-bold">
-                    Milho Amarelo
-                  </h3>
-
-                  <p className="mt-2 font-semibold text-green-600">
-                    35 MZN/kg
-                  </p>
-
-                  <p className="text-sm text-gray-500">
-                    📍 Nampula
-                  </p>
+              <div>
+                <div className={styles.cardEyebrow}>
+                  MERCADO DE MAPUTO
                 </div>
+
+                <h2>
+                  Produtos locais.
+                  <br />
+                  Negócios reais.
+                </h2>
+
+                <p>
+                  Uma plataforma para aproximar quem produz
+                  de quem compra.
+                </p>
+              </div>
+
+              <div className={styles.heroStats}>
+
+                <div>
+                  <strong>Maputo</strong>
+                  <span>Mercado inicial</span>
+                </div>
+
+                <div>
+                  <strong>24/7</strong>
+                  <span>Marketplace online</span>
+                </div>
+
               </div>
 
             </div>
+
           </div>
 
         </div>
       </section>
 
+
       {/* CATEGORIES */}
-      <section className="mx-auto max-w-7xl px-6 py-16">
+      <section className={styles.categories}>
 
-        <div className="mb-8 flex items-end justify-between">
+        <div className={styles.sectionHeader}>
+
           <div>
-            <p className="font-semibold text-green-600">
-              EXPLORE
-            </p>
+            <div className={styles.sectionEyebrow}>
+              MARKETPLACE
+            </div>
 
-            <h2 className="mt-1 text-3xl font-bold">
-              Categorias
-            </h2>
+            <h2>Explore por categoria</h2>
 
-            <p className="mt-2 text-gray-500">
-              Encontre rapidamente o que procura.
+            <p>
+              Encontre rapidamente os produtos agrícolas
+              de que precisa.
             </p>
           </div>
 
-          <Link
-            href="/produtos"
-            className="hidden font-semibold text-green-600 sm:block"
-          >
-            Ver todas →
-          </Link>
+          {/* IMPORTANT:
+              This is deliberately OUTSIDE the text container.
+              It is a normal block, never absolute.
+          */}
+          <div className={styles.viewAllWrapper}>
+            <Link
+              href="/auth?role=buyer"
+              className={styles.viewAllButton}
+            >
+              Ver todos
+            </Link>
+          </div>
+
         </div>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+
+        <div className={styles.categoryGrid}>
+
           {categories.map((category) => (
-            <Link
-              key={category.name}
-              href={`/produtos?categoria=${category.name}`}
-              className="group rounded-2xl border bg-white p-5 text-center transition hover:-translate-y-1 hover:border-green-300 hover:shadow-lg"
+            <div
+              className={styles.categoryCard}
+              key={category.title}
             >
-              <div className="text-4xl">
+
+              <div className={styles.categoryIcon}>
                 {category.icon}
               </div>
 
-              <p className="mt-3 text-sm font-semibold group-hover:text-green-600">
-                {category.name}
-              </p>
-            </Link>
+              <h3>{category.title}</h3>
+
+              <p>{category.text}</p>
+
+            </div>
           ))}
-        </div>
-
-      </section>
-
-      {/* PRODUCTS */}
-      <section className="bg-gray-50 py-16">
-
-        <div className="mx-auto max-w-7xl px-6">
-
-          <div className="mb-8 flex items-end justify-between">
-            <div>
-              <p className="font-semibold text-green-600">
-                MERCADO
-              </p>
-
-              <h2 className="mt-1 text-3xl font-bold">
-                Produtos disponíveis
-              </h2>
-
-              <p className="mt-2 text-gray-500">
-                Produtos anunciados por produtores e vendedores.
-              </p>
-            </div>
-
-            <Link
-              href="/produtos"
-              className="hidden font-semibold text-green-600 sm:block"
-            >
-              Ver todos →
-            </Link>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-
-            {products.map((product) => (
-              <div
-                key={product.name}
-                className="overflow-hidden rounded-2xl border bg-white transition hover:-translate-y-1 hover:shadow-xl"
-              >
-
-                <div className="flex h-48 items-center justify-center bg-green-50 text-8xl">
-                  {product.icon}
-                </div>
-
-                <div className="p-5">
-
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="font-bold">
-                      {product.name}
-                    </h3>
-
-                    <span className="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
-                      Disponível
-                    </span>
-                  </div>
-
-                  <p className="mt-2 text-sm text-gray-500">
-                    📍 {product.location}
-                  </p>
-
-                  <p className="mt-1 text-sm text-gray-500">
-                    👤 {product.seller}
-                  </p>
-
-                  <div className="mt-5 flex items-center justify-between">
-                    <p className="text-lg font-bold text-green-600">
-                      {product.price}
-                    </p>
-
-                    <button className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">
-                      Ver
-                    </button>
-                  </div>
-
-                </div>
-
-              </div>
-            ))}
-
-          </div>
 
         </div>
 
       </section>
 
-      {/* SELLER CTA */}
-      <section className="mx-auto max-w-7xl px-6 py-16">
-
-        <div className="overflow-hidden rounded-3xl bg-green-700 px-8 py-12 text-white md:px-16">
-
-          <div className="grid items-center gap-10 md:grid-cols-2">
-
-            <div>
-              <span className="rounded-full bg-white/10 px-4 py-2 text-sm">
-                👨🏾‍🌾 Para produtores
-              </span>
-
-              <h2 className="mt-6 text-3xl font-bold md:text-4xl">
-                Tem produtos agrícolas para vender?
-              </h2>
-
-              <p className="mt-4 max-w-xl text-green-50">
-                Publique os seus produtos no Mercado Verde e
-                encontre compradores interessados em todo
-                Moçambique.
-              </p>
-
-              <button className="mt-7 rounded-xl bg-white px-6 py-3 font-bold text-green-700 hover:bg-green-50">
-                Começar a vender
-              </button>
-            </div>
-
-            <div className="text-center text-9xl">
-              👨🏾‍🌾
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
 
       {/* HOW IT WORKS */}
-      <section className="bg-gray-50 py-16">
+      <section className={styles.howSection}>
 
-        <div className="mx-auto max-w-7xl px-6 text-center">
+        <div className={styles.sectionInner}>
 
-          <p className="font-semibold text-green-600">
-            SIMPLES
-          </p>
+          <div className={styles.sectionEyebrow}>
+            SIMPLES E DIRECTO
+          </div>
 
-          <h2 className="mt-1 text-3xl font-bold">
-            Como funciona?
-          </h2>
+          <h2>Como funciona</h2>
 
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
+          <div className={styles.steps}>
 
-            <div className="rounded-2xl bg-white p-8 shadow-sm">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl">
-                🔎
-              </div>
-
-              <h3 className="mt-5 text-xl font-bold">
-                1. Encontre
-              </h3>
-
-              <p className="mt-3 text-gray-500">
-                Pesquise produtos agrícolas disponíveis
-                perto de si.
+            <div className={styles.step}>
+              <span>01</span>
+              <h3>Publique</h3>
+              <p>
+                O produtor apresenta os seus produtos,
+                quantidades e disponibilidade.
               </p>
             </div>
 
-            <div className="rounded-2xl bg-white p-8 shadow-sm">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl">
-                🤝
-              </div>
-
-              <h3 className="mt-5 text-xl font-bold">
-                2. Contacte
-              </h3>
-
-              <p className="mt-3 text-gray-500">
-                Entre em contacto diretamente com o
-                produtor ou vendedor.
+            <div className={styles.step}>
+              <span>02</span>
+              <h3>Encontre</h3>
+              <p>
+                O comprador pesquisa produtos e
+                encontra produtores.
               </p>
             </div>
 
-            <div className="rounded-2xl bg-white p-8 shadow-sm">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl">
-                🚚
-              </div>
-
-              <h3 className="mt-5 text-xl font-bold">
-                3. Negocie
-              </h3>
-
-              <p className="mt-3 text-gray-500">
-                Combine preço, quantidade, pagamento
-                e entrega.
+            <div className={styles.step}>
+              <span>03</span>
+              <h3>Negocie e venda</h3>
+              <p>
+                As duas partes entram em contacto
+                e fazem o negócio.
               </p>
             </div>
 
@@ -413,88 +278,179 @@ export default function Home() {
 
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-gray-900 text-gray-300">
 
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-12 md:grid-cols-4">
+      {/* PRODUCER / BUYER */}
+      <section className={styles.businessSection}>
 
-          <div>
-            <div className="flex items-center gap-2">
-              <div className="text-2xl">🌱</div>
-              <span className="text-xl font-bold text-white">
-                Mercado Verde
-              </span>
-            </div>
+        <div className={styles.businessGrid}>
 
-            <p className="mt-4 text-sm leading-6 text-gray-400">
-              Uma plataforma digital para aproximar
-              produtores, vendedores e compradores
-              agrícolas em Moçambique.
+          <div className={`${styles.businessCard} ${styles.producerCard}`}>
+
+            <div className={styles.businessIcon}>👩🏾‍🌾</div>
+
+            <h2>É produtor?</h2>
+
+            <p>
+              Apresente os seus produtos e encontre
+              compradores para a sua produção.
             </p>
-          </div>
 
-          <div>
-            <h3 className="font-semibold text-white">
-              Mercado
-            </h3>
-
-            <div className="mt-4 space-y-3 text-sm">
-              <Link href="/produtos" className="block hover:text-white">
-                Produtos
-              </Link>
-
-              <Link href="/categorias" className="block hover:text-white">
-                Categorias
-              </Link>
-
-              <Link href="/vender" className="block hover:text-white">
-                Vender produtos
+            <div className={styles.cardButtonArea}>
+              <Link
+                href="/auth?role=producer"
+                className={styles.whiteButton}
+              >
+                Começar a vender
               </Link>
             </div>
+
           </div>
 
-          <div>
-            <h3 className="font-semibold text-white">
-              Ajuda
-            </h3>
 
-            <div className="mt-4 space-y-3 text-sm">
-              <Link href="/sobre" className="block hover:text-white">
-                Sobre nós
-              </Link>
+          <div className={`${styles.businessCard} ${styles.buyerCard}`}>
 
-              <Link href="/contacto" className="block hover:text-white">
-                Contacto
-              </Link>
+            <div className={styles.businessIcon}>🏪</div>
 
-              <Link href="/termos" className="block hover:text-white">
-                Termos e condições
+            <h2>É comprador?</h2>
+
+            <p>
+              Encontre produtos agrícolas e conecte-se
+              diretamente aos produtores.
+            </p>
+
+            {/* IMPORTANT:
+                Button is in its own block below the text.
+            */}
+            <div className={styles.cardButtonArea}>
+              <Link
+                href="/auth?role=buyer"
+                className={styles.greenAction}
+              >
+                Explorar produtos
               </Link>
             </div>
-          </div>
 
-          <div>
-            <h3 className="font-semibold text-white">
-              Idioma
-            </h3>
-
-            <div className="mt-4 flex gap-3">
-              <button className="rounded-lg bg-green-600 px-4 py-2 text-sm text-white">
-                Português
-              </button>
-
-              <button className="rounded-lg border border-gray-700 px-4 py-2 text-sm hover:bg-gray-800">
-                English
-              </button>
-            </div>
           </div>
 
         </div>
 
-        <div className="border-t border-gray-800">
-          <div className="mx-auto max-w-7xl px-6 py-6 text-center text-sm text-gray-500">
-            © {new Date().getFullYear()} Mercado Verde. Todos os direitos reservados.
+      </section>
+
+
+      {/* FOUNDER */}
+      <section className={styles.founderSection}>
+
+        <div className={styles.founderInner}>
+
+          <div className={styles.founderBadge}>
+            MERCADO VERDE
           </div>
+
+          <div className={styles.founderGrid}>
+
+            <div>
+              <h2>
+                Conheça o fundador.
+              </h2>
+
+              <p>
+                O Mercado Verde nasceu com a visão de aproximar
+                produtores agrícolas e compradores através
+                de tecnologia e informação de mercado.
+              </p>
+            </div>
+
+            <div className={styles.founderInfo}>
+
+              <div className={styles.founderName}>
+                Toni Magaie
+              </div>
+
+              <div className={styles.founderRole}>
+                Fundador
+              </div>
+
+              <div className={styles.founderExperience}>
+                <strong>Experiência</strong>
+                <span>Information Analyst</span>
+                <span>Market Research</span>
+              </div>
+
+              <a
+                href="tel:+258879843287"
+                className={styles.contactButton}
+              >
+                📞 +258 87 984 3287
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* FINAL CTA */}
+      <section className={styles.finalSection}>
+
+        <div className={styles.finalCard}>
+
+          <div className={styles.sectionEyebrowLight}>
+            MERCADO VERDE
+          </div>
+
+          <h2>Do produtor ao comprador.</h2>
+
+          <p>
+            Faça parte de uma nova forma de comercializar
+            produtos agrícolas em Moçambique.
+          </p>
+
+          <div className={styles.finalButtonArea}>
+            <Link
+              href="/auth?mode=signup"
+              className={styles.finalButton}
+            >
+              Criar a minha conta
+            </Link>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* FOOTER */}
+      <footer className={styles.footer}>
+
+        <div className={styles.footerInner}>
+
+          <div>
+            <strong>🌿 Mercado Verde</strong>
+            <span>Do produtor ao comprador.</span>
+          </div>
+
+          <div>
+            <strong>Fundador</strong>
+            <span>Toni Magaie</span>
+          </div>
+
+          <div>
+            <strong>Contacto</strong>
+            <a href="tel:+258879843287">
+              +258 87 984 3287
+            </a>
+          </div>
+
+          <div>
+            <span>Maputo, Moçambique 🇲🇿</span>
+            <span>
+              © {new Date().getFullYear()} Mercado Verde
+            </span>
+          </div>
+
         </div>
 
       </footer>
